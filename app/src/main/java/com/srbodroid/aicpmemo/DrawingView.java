@@ -30,7 +30,7 @@ public class DrawingView extends View {
     //drawing and canvas paint
     private Paint drawPaint, canvasPaint;
     //initial color
-    private int paintColor = 0xFF660000;
+    private int paintColor = 0xFF385056;
     //canvas
     private Canvas drawCanvas;
     //canvas bitmap
@@ -133,8 +133,8 @@ public class DrawingView extends View {
         else drawPaint.setXfermode(null);
     }
 
-    public void startNew(){
-        drawCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
+    public void startNew(int color){
+        drawCanvas.drawColor(color);
         invalidate();
     }
 

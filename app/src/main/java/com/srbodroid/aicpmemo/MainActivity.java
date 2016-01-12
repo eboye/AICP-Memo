@@ -8,24 +8,26 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.github.clans.fab.FloatingActionButton;
+import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
 
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener{
 
     private DrawingView drawView;
-    private ImageButton currPaint;
     private float smallBrush, mediumBrush, largeBrush;
     private int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE;
+    private int selectedColorR = 38, defaultColorG = 50, defaultColorB = 56;
+    private int defaultColorR = 38, selectedColorG = 50, selectedColorB = 56, selectedColorRGB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,39 +45,37 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
             }
         } else {
             // Handle other intents, such as being started from the home screen
-            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
-            });
+//            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//            fab.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                            .setAction("Action", null).show();
+//                }
+//            });
 
             drawView = (DrawingView)findViewById(R.id.drawing);
-
-            LinearLayout paintLayout = (LinearLayout)findViewById(R.id.paint_colors);
-            currPaint = (ImageButton)paintLayout.getChildAt(0);
-            currPaint.setImageDrawable(getResources().getDrawable(R.drawable.paint_pressed, null));
 
             smallBrush = getResources().getInteger(R.integer.small_size);
             mediumBrush = getResources().getInteger(R.integer.medium_size);
             largeBrush = getResources().getInteger(R.integer.large_size);
 
-            ImageButton drawBtn = (ImageButton) findViewById(R.id.draw_btn);
+            drawView.setBrushSize(smallBrush);
 
-            drawBtn.setOnClickListener(this);
+            FloatingActionButton brush_size = (FloatingActionButton) findViewById(R.id.draw_btn);
+            brush_size.setOnClickListener(this);
 
-            drawView.setBrushSize(mediumBrush);
+            FloatingActionButton erase_btn = (FloatingActionButton) findViewById(R.id.erase_btn);
+            erase_btn.setOnClickListener(this);
 
-            ImageButton eraseBtn = (ImageButton) findViewById(R.id.erase_btn);
-            eraseBtn.setOnClickListener(this);
+            FloatingActionButton color_fill = (FloatingActionButton) findViewById(R.id.color_fill);
+            color_fill.setOnClickListener(this);
 
-            ImageButton newBtn = (ImageButton) findViewById(R.id.new_btn);
-            newBtn.setOnClickListener(this);
+            FloatingActionButton color_pick = (FloatingActionButton) findViewById(R.id.color_pick);
+            color_pick.setOnClickListener(this);
 
-            ImageButton saveBtn = (ImageButton) findViewById(R.id.save_btn);
-            saveBtn.setOnClickListener(this);
+            FloatingActionButton save_btn = (FloatingActionButton) findViewById(R.id.save_btn);
+            save_btn.setOnClickListener(this);
         }
 
     }
@@ -103,26 +103,60 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
         }
     }
 
-    public void paintClicked(View view){
-        //use chosen color
-        if(view!=currPaint){
-        //update color
-            ImageButton imgView = (ImageButton)view;
-            String color = view.getTag().toString();
-            drawView.setColor(color);
-
-            imgView.setImageDrawable(getResources().getDrawable(R.drawable.paint_pressed, null));
-            currPaint.setImageDrawable(getResources().getDrawable(R.drawable.paint, null));
-            currPaint=(ImageButton)view;
-            drawView.setErase(false);
-            drawView.setBrushSize(drawView.getLastBrushSize());
-        }
-    }
-
     @Override
     public void onClick(View view){
     //respond to clicks
-        if(view.getId()==R.id.draw_btn){
+        if(view.getId() == R.id.color_fill){
+            defaultColorR = selectedColorR;
+            defaultColorG = selectedColorG;
+            defaultColorB = selectedColorB;
+            final ColorPicker cp = new ColorPicker(MainActivity.this, defaultColorR, defaultColorG, defaultColorB);
+            cp.show();
+            /* On Click listener for the dialog, when the user select the color */
+            Button okColor = (Button)cp.findViewById(R.id.okColorButton);
+            okColor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                /* You can get single channel (value 0-255) */
+                    selectedColorR = cp.getRed();
+                    selectedColorG = cp.getGreen();
+                    selectedColorB = cp.getBlue();
+
+                /* Or the android RGB Color (see the android Color class reference) */
+                    selectedColorRGB = cp.getColor();
+                    drawView.startNew(selectedColorRGB);
+
+                    cp.dismiss();
+                }
+            });
+        } else if(view.getId() == R.id.color_pick){
+            defaultColorR = selectedColorR;
+            defaultColorG = selectedColorG;
+            defaultColorB = selectedColorB;
+            final ColorPicker cp = new ColorPicker(MainActivity.this, defaultColorR, defaultColorG, defaultColorB);
+            cp.show();
+            /* On Click listener for the dialog, when the user select the color */
+            Button okColor = (Button)cp.findViewById(R.id.okColorButton);
+            okColor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                /* You can get single channel (value 0-255) */
+                    selectedColorR = cp.getRed();
+                    selectedColorG = cp.getGreen();
+                    selectedColorB = cp.getBlue();
+
+                /* Or the android RGB Color (see the android Color class reference) */
+                    selectedColorRGB = cp.getColor();
+                    String finalColor = "#FF" + String.valueOf(selectedColorR) + String.valueOf(selectedColorG) + String.valueOf(selectedColorB);
+
+                    drawView.setColor(finalColor);
+
+                    cp.dismiss();
+                }
+            });
+        } else if(view.getId()==R.id.draw_btn){
             //draw button clicked
             final Dialog brushDialog = new Dialog(this);
             brushDialog.setTitle("Brush size:");
@@ -197,23 +231,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
             });
 
             brushDialog.show();
-        } else if(view.getId()==R.id.new_btn){
-            //new button
-            AlertDialog.Builder newDialog = new AlertDialog.Builder(this);
-            newDialog.setTitle("New drawing");
-            newDialog.setMessage("Start new drawing (you will lose the current drawing)?");
-            newDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
-                public void onClick(DialogInterface dialog, int which){
-                    drawView.startNew();
-                    dialog.dismiss();
-                }
-            });
-            newDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
-                public void onClick(DialogInterface dialog, int which){
-                    dialog.cancel();
-                }
-            });
-            newDialog.show();
         } else if(view.getId()==R.id.save_btn){
             //save drawing
             AlertDialog.Builder saveDialog = new AlertDialog.Builder(this);

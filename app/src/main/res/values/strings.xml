@@ -12,4 +12,6 @@
     <string name="med">Medium</string>
     <string name="lrg">Large</string>
     <string name="editable_image">Draw over image</string>
+    <string name="confirm_size">Confirm size</string>
+    <string name="brush_size_preview">Brush preview size</string>
 </resources>
