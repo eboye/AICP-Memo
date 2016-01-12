@@ -13,10 +13,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
 
 import java.util.UUID;
@@ -56,11 +59,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
 
             drawView = (DrawingView)findViewById(R.id.drawing);
 
-            smallBrush = getResources().getInteger(R.integer.small_size);
-            mediumBrush = getResources().getInteger(R.integer.medium_size);
-            largeBrush = getResources().getInteger(R.integer.large_size);
-
-            drawView.setBrushSize(smallBrush);
+            drawView.setBrushSize(10);
 
             FloatingActionButton brush_size = (FloatingActionButton) findViewById(R.id.draw_btn);
             brush_size.setOnClickListener(this);
@@ -160,38 +159,48 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
             //draw button clicked
             final Dialog brushDialog = new Dialog(this);
             brushDialog.setTitle("Brush size:");
-            brushDialog.setContentView(R.layout.brush_chooser);
+            brushDialog.setContentView(R.layout.brush_size);
 
-            ImageButton smallBtn = (ImageButton)brushDialog.findViewById(R.id.small_brush);
-            smallBtn.setOnClickListener(new OnClickListener(){
+            final SeekBar seekBar = (SeekBar)brushDialog.findViewById(R.id.seekBar);
+            int size = (Math.round(drawView.getLastBrushSize()) + 5) * 10;
+            final ImageView brushPreview = (ImageView)brushDialog.findViewById(R.id.brush_preview);
+            seekBar.setProgress(size);
+            LinearLayout.LayoutParams sizeParams = new LinearLayout.LayoutParams(size,size);
+            brushPreview.setLayoutParams(sizeParams);
+
+            SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
                 @Override
-                public void onClick(View v) {
-                    drawView.setBrushSize(smallBrush);
-                    drawView.setLastBrushSize(smallBrush);
-                    drawView.setErase(false);
-                    brushDialog.dismiss();
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    final int width = (progress + 5) * 10;
+                    final int height = (progress + 5) * 10;
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,height);
+                    brushPreview.setLayoutParams(params);
                 }
-            });
 
-            ImageButton mediumBtn = (ImageButton)brushDialog.findViewById(R.id.medium_brush);
-            mediumBtn.setOnClickListener(new OnClickListener(){
                 @Override
-                public void onClick(View v) {
-                    drawView.setBrushSize(mediumBrush);
-                    drawView.setLastBrushSize(mediumBrush);
-                    drawView.setErase(false);
-                    brushDialog.dismiss();
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
                 }
-            });
 
-            ImageButton largeBtn = (ImageButton)brushDialog.findViewById(R.id.large_brush);
-            largeBtn.setOnClickListener(new OnClickListener(){
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                }
+            };
+
+            seekBar.setOnSeekBarChangeListener(seekBarChangeListener);
+
+            Button setSize = (Button)brushDialog.findViewById(R.id.get_size);
+            setSize.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    drawView.setBrushSize(largeBrush);
-                    drawView.setLastBrushSize(largeBrush);
+                    int finalSize = seekBar.getProgress();
+                    drawView.setBrushSize(finalSize);
+                    drawView.setLastBrushSize(finalSize);
                     drawView.setErase(false);
-                    brushDialog.dismiss();
+                    brushDialog.hide();
+                    final FloatingActionMenu fabMenu = (FloatingActionMenu) findViewById(R.id.menu);
+                    fabMenu.close(true);
                 }
             });
 
@@ -200,37 +209,53 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
             //switch to erase - choose size
             final Dialog brushDialog = new Dialog(this);
             brushDialog.setTitle("Eraser size:");
-            brushDialog.setContentView(R.layout.brush_chooser);
+            brushDialog.setContentView(R.layout.brush_size);
 
-            ImageButton smallBtn = (ImageButton)brushDialog.findViewById(R.id.small_brush);
-            smallBtn.setOnClickListener(new OnClickListener(){
+            final SeekBar seekBar = (SeekBar)brushDialog.findViewById(R.id.seekBar);
+            int size = (Math.round(drawView.getLastBrushSize()) + 5) * 10;
+            final ImageView brushPreview = (ImageView)brushDialog.findViewById(R.id.brush_preview);
+            seekBar.setProgress(size);
+            LinearLayout.LayoutParams sizeParams = new LinearLayout.LayoutParams(size,size);
+            brushPreview.setLayoutParams(sizeParams);
+
+            SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
                 @Override
-                public void onClick(View v) {
-                    drawView.setErase(true);
-                    drawView.setBrushSize(smallBrush);
-                    brushDialog.dismiss();
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    final int width = (progress + 5) * 10;
+                    final int height = (progress + 5) * 10;
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,height);
+                    brushPreview.setLayoutParams(params);
                 }
-            });
-            ImageButton mediumBtn = (ImageButton)brushDialog.findViewById(R.id.medium_brush);
-            mediumBtn.setOnClickListener(new OnClickListener(){
+
                 @Override
-                public void onClick(View v) {
-                    drawView.setErase(true);
-                    drawView.setBrushSize(mediumBrush);
-                    brushDialog.dismiss();
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
                 }
-            });
-            ImageButton largeBtn = (ImageButton)brushDialog.findViewById(R.id.large_brush);
-            largeBtn.setOnClickListener(new OnClickListener(){
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                }
+            };
+
+            seekBar.setOnSeekBarChangeListener(seekBarChangeListener);
+
+            Button setSize = (Button)brushDialog.findViewById(R.id.get_size);
+            setSize.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    int finalSize = seekBar.getProgress();
+                    drawView.setBrushSize(finalSize);
+                    drawView.setLastBrushSize(finalSize);
                     drawView.setErase(true);
-                    drawView.setBrushSize(largeBrush);
-                    brushDialog.dismiss();
+                    brushDialog.hide();
+                    final FloatingActionMenu fabMenu = (FloatingActionMenu) findViewById(R.id.menu);
+                    fabMenu.close(true);
                 }
             });
 
             brushDialog.show();
+
         } else if(view.getId()==R.id.save_btn){
             //save drawing
             AlertDialog.Builder saveDialog = new AlertDialog.Builder(this);
