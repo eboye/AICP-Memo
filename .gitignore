@@ -6,3 +6,9 @@
 .DS_Store
 /build
 /captures
+app/src/main/res/mipmap-xxxhdpi/ico_test_b.png
+app/src/main/res/mipmap-xxxhdpi/ico_test_c.png
+app/src/main/res/mipmap-xxxhdpi/ico_test_d.png
+app/src/main/res/mipmap-xxxhdpi/ico_test_a.png
+gradle
+.idea
