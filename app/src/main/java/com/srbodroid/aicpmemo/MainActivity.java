@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
                     drawView.startNew(selectedColorRGB);
 
                     cp.dismiss();
+                    closeFab();
                 }
             });
         } else if(view.getId() == R.id.color_pick){
@@ -166,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
                     drawView.setColor(hexColor);
 
                     cp.dismiss();
+                    closeFab();
                 }
             });
         } else if(view.getId()==R.id.draw_btn){
@@ -212,8 +214,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
                     drawView.setLastBrushSize(finalSize);
                     drawView.setErase(false);
                     brushDialog.hide();
-                    final FloatingActionMenu fabMenu = (FloatingActionMenu) findViewById(R.id.menu);
-                    fabMenu.close(true);
+                    closeFab();
                 }
             });
 
@@ -262,8 +263,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
                     drawView.setLastBrushSize(finalSize);
                     drawView.setErase(true);
                     brushDialog.hide();
-                    final FloatingActionMenu fabMenu = (FloatingActionMenu) findViewById(R.id.menu);
-                    fabMenu.close(true);
+                    closeFab();
                 }
             });
 
@@ -313,5 +313,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
             int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
             decorView.setSystemUiVisibility(uiOptions);
         }
+    }
+
+    public void closeFab(){
+        final FloatingActionMenu fabMenu = (FloatingActionMenu) findViewById(R.id.menu);
+        fabMenu.close(true);
     }
 }

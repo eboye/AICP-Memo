@@ -13,7 +13,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -25,4 +25,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.github.clans:fab:1.6.2'
     compile 'com.pes.materialcolorpicker:library:1.0.1'
+    compile 'com.github.halysongoncalves:pugnotification:1.8.1'
 }
