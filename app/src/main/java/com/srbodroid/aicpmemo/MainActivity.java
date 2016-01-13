@@ -93,22 +93,24 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
     private void handleSendImage(Intent intent) {
         Uri imageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
         if (imageUri != null) {
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                // We will need to request the permission
-                if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    // Explain to the user why we need to read the storage
-                    Toast whyWeNeedPermission = Toast.makeText(getApplicationContext(),
-                            "We need permission to access that image.", Toast.LENGTH_SHORT);
-                    whyWeNeedPermission.show();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    // We will need to request the permission
+                    if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                        // Explain to the user why we need to read the storage
+                        Toast whyWeNeedPermission = Toast.makeText(getApplicationContext(),
+                                "We need permission to access that image.", Toast.LENGTH_SHORT);
+                        whyWeNeedPermission.show();
+                    }
+                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+
+
+                } else {
+                    // The permission is granted, we can perform the action
+                    drawView = (DrawingView)findViewById(R.id.drawing);
+                    drawView.placeImage(imageUri);
                 }
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-
-
-            } else {
-                // The permission is granted, we can perform the action
-                drawView = (DrawingView)findViewById(R.id.drawing);
-                drawView.placeImage(imageUri);
             }
         }
     }
