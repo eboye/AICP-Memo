@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
@@ -13,6 +14,7 @@ import android.graphics.PorterDuffXfermode;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -66,9 +68,14 @@ public class DrawingView extends View {
     protected void onSizeChanged(int w, int h, int oldWidth, int oldHeight) {
     //view given size
         super.onSizeChanged(w, h, oldWidth, oldHeight);
+
         Bitmap defaultBitmap = Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888);
         if(canvasBitmap.sameAs(defaultBitmap)){
             canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        } else {
+            Log.d("BitmapSize", "width" + String.valueOf(w));
+            Log.d("BitmapSize", "height" + String.valueOf(h));
+            canvasBitmap = getResizedBitmap(canvasBitmap, w, h);
         }
         drawCanvas = new Canvas(canvasBitmap);
     }
@@ -158,6 +165,21 @@ public class DrawingView extends View {
             int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
             return cursor.getString(idx);
         }
+    }
+
+    public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
+
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+
+        float scale = newWidth/width;
+        float xTranslation = 0.0f, yTranslation = (newHeight - height * scale)/2.0f;
+        Matrix transformation = new Matrix();
+        transformation.postTranslate(xTranslation, yTranslation);
+        transformation.preScale(scale, scale);
+
+        return Bitmap.createBitmap(bm, 0, 0, width, height, transformation, true);
+
     }
 
 }
