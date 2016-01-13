@@ -78,6 +78,14 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
 
             FloatingActionButton save_btn = (FloatingActionButton) findViewById(R.id.save_btn);
             save_btn.setOnClickListener(this);
+
+//            FloatingActionButton screenShotButton = new FloatingActionButton(this);
+//
+//            if (RootUtil.isDeviceRooted()){
+//                final FloatingActionMenu fabMenu = (FloatingActionMenu) findViewById(R.id.menu);
+//                fabMenu.addMenuButton(screenShotButton);
+//            }
+
         }
 
     }
