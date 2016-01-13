@@ -148,9 +148,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
 
                 /* Or the android RGB Color (see the android Color class reference) */
                     selectedColorRGB = cp.getColor();
-                    String finalColor = "#FF" + String.valueOf(selectedColorR) + String.valueOf(selectedColorG) + String.valueOf(selectedColorB);
-
-                    drawView.setColor(finalColor);
+                    String hexcolor = String.format("#%06X",(0xFFFFFF & selectedColorRGB));
+                    drawView.setColor(hexcolor);
 
                     cp.dismiss();
                 }
