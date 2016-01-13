@@ -296,7 +296,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
             });
             saveDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
                 public void onClick(DialogInterface dialog, int which){
-                    dialog.cancel();
+                    dialog.dismiss();
                 }
             });
             saveDialog.show();
