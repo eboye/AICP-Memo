@@ -111,6 +111,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
                     drawView = (DrawingView)findViewById(R.id.drawing);
                     drawView.placeImage(imageUri);
                 }
+            } else {
+                // The permission is granted, we can perform the action
+                drawView = (DrawingView)findViewById(R.id.drawing);
+                drawView.placeImage(imageUri);
             }
         }
     }
