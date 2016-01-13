@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
 
     }
 
-    void handleSendImage(Intent intent) {
+    private void handleSendImage(Intent intent) {
         Uri imageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
         if (imageUri != null) {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -152,8 +152,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
 
                 /* Or the android RGB Color (see the android Color class reference) */
                     selectedColorRGB = cp.getColor();
-                    String hexcolor = String.format("#%06X",(0xFFFFFF & selectedColorRGB));
-                    drawView.setColor(hexcolor);
+                    String hexColor = String.format("#%06X",(0xFFFFFF & selectedColorRGB));
+                    drawView.setColor(hexColor);
 
                     cp.dismiss();
                 }

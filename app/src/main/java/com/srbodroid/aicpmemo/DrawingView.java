@@ -57,15 +57,15 @@ public class DrawingView extends View {
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
         canvasPaint = new Paint(Paint.DITHER_FLAG);
 
-        brushSize = getResources().getInteger(R.integer.medium_size);
+        brushSize = 20;
         lastBrushSize = brushSize;
         drawPaint.setStrokeWidth(brushSize);
     }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+    protected void onSizeChanged(int w, int h, int oldWidth, int oldHeight) {
     //view given size
-        super.onSizeChanged(w, h, oldw, oldh);
+        super.onSizeChanged(w, h, oldWidth, oldHeight);
         Bitmap defaultBitmap = Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888);
         if(canvasBitmap.sameAs(defaultBitmap)){
             canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
@@ -78,7 +78,6 @@ public class DrawingView extends View {
     //draw view
         canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
         canvas.drawPath(drawPath, drawPaint);
-//        Log.d("AICP",canvasBitmap.toString());
     }
 
     @Override
