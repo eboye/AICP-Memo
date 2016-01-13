@@ -27,10 +27,11 @@ import java.util.UUID;
 public class MainActivity extends AppCompatActivity implements OnClickListener{
 
     private DrawingView drawView;
-    private float smallBrush, mediumBrush, largeBrush;
     private int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE;
-    private int selectedColorR = 38, defaultColorG = 50, defaultColorB = 56;
-    private int defaultColorR = 38, selectedColorG = 50, selectedColorB = 56, selectedColorRGB;
+    private int selectedColorR = 38;
+    private int selectedColorG = 50;
+    private int selectedColorB = 56;
+    private int selectedColorRGB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +106,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
     @Override
     public void onClick(View view){
     //respond to clicks
+        int defaultColorG;
+        int defaultColorB;
+        int defaultColorR;
         if(view.getId() == R.id.color_fill){
             defaultColorR = selectedColorR;
             defaultColorG = selectedColorG;

@@ -34,7 +34,7 @@ public class DrawingView extends View {
     //canvas
     private Canvas drawCanvas;
     //canvas bitmap
-    private Bitmap canvasBitmap = Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888);;
+    private Bitmap canvasBitmap = Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888);
     // brush size
     private float brushSize, lastBrushSize;
     // cursor
