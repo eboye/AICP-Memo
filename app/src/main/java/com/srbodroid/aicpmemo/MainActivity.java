@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
             if (type.startsWith("image/")) {
                 handleSendImage(intent); // Handle single image being sent
             }
+        } else {
+            Toast.makeText(this, "Nema ulaza", Toast.LENGTH_LONG).show();
         }
 //        else {
             // Handle other intents, such as being started from the home screen

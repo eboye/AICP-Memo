@@ -146,7 +146,7 @@ public class DrawingView extends View {
 
     public void placeImage(Uri uri){
         File file = new File(getRealPathFromURI(uri));
-        cursor.close();
+        //cursor.close();
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         Bitmap loadedBitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
